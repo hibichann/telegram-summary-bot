@@ -276,7 +276,7 @@ export default {
 				if (!res.ok) {
 					console.error(`Error sending message:`, res);
 				}
-				return new Response(res.body);
+				return new Response('ok success');
 			})
 			.on('query', async (ctx) => {
 				const groupId = ctx.update.message!.chat.id;
