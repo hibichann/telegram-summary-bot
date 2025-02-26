@@ -286,7 +286,7 @@ export default {
 					if (!res.ok) {
 						console.error(`Error sending message:`, res);
 					}
-					return new Response('ok');
+					return new Response('ok success');
 				}
 				const { results } = await env.DB.prepare(
 					`
@@ -310,7 +310,7 @@ ${results
 				if (!res.ok) {
 					console.error(`Error sending message:`, res);
 				}
-				return new Response('ok');
+				return new Response('ok success');
 			})
 			.on('ask', async (ctx) => {
 				const groupId = ctx.update.message!.chat.id;
@@ -321,7 +321,7 @@ ${results
 					if (!res.ok) {
 						console.error(`Error sending message:`, res);
 					}
-					return new Response('ok');
+					return new Response('ok success');
 				}
 				let res = await ctx.api.sendMessage(ctx.bot.api.toString(), {
 					chat_id: userId,
@@ -331,7 +331,7 @@ ${results
 				});
 				if (!res.ok) {
 					await ctx.reply(`请开启和 bot 的私聊, 不然无法接收消息`);
-					return new Response('ok');
+					return new Response('ok success');
 				}
 				const { results } = await env.DB.prepare(
 					`
@@ -369,7 +369,7 @@ ${results
 					);
 				} catch (e) {
 					console.error(e);
-					return new Response('ok');
+					return new Response('ok success');
 				}
 				let response_text: string;
 				if (result.response.promptFeedback?.blockReason) {
@@ -387,17 +387,17 @@ ${results
 					let reason = ((await res.json()) as any)?.promptFeedback?.blockReason;
 					if (reason) {
 						await ctx.reply(`无法回答, 理由 ${reason}`);
-						return new Response('ok');
+						return new Response('ok success');
 					}
 					await ctx.reply(`发送失败`);
 				}
-				return new Response('ok');
+				return new Response('ok success');
 			})
 			.on('summary', async (bot) => {
 				const groupId = bot.update.message!.chat.id;
 				if (bot.update.message!.text!.split(' ').length === 1) {
 					await bot.reply('请输入要查询的时间范围/消息数量, 如 /summary 114h 或 /summary 514');
-					return new Response('ok');
+					return new Response('ok success');
 				}
 				const summary = bot.update.message!.text!.split(' ')[1];
 				let results: Record<string, unknown>[];
@@ -414,7 +414,7 @@ ${results
 					}
 				} catch (e: any) {
 					await bot.reply('请输入要查询的时间范围/消息数量, 如 /summary 114h 或 /summary 514  ' + e.message);
-					return new Response('ok');
+					return new Response('ok success');
 				}
 				if (summary.endsWith('h')) {
 					results = (
@@ -464,12 +464,12 @@ ${results
 					}
 				}
 
-				return new Response('ok');
+				return new Response('ok success');
 			})
 			.on(':message', async (bot) => {
 				if (!bot.update.message!.chat.type.includes('group')) {
 					await bot.reply('I am a bot, please add me to a group to use me.');
-					return new Response('ok');
+					return new Response('ok success');
 				}
 
 				switch (bot.update_type) {
@@ -510,7 +510,7 @@ ${results
 						} catch (e) {
 							console.error(e);
 						}
-						return new Response('ok');
+						return new Response('ok success');
 					}
 					case 'photo': {
 						const msg = bot.update.message!;
@@ -523,7 +523,7 @@ ${results
 						const file = await bot.getFile(photo.file_id).then((response) => response.arrayBuffer());
 						if (!isJPEGBase64(Buffer.from(file).toString('base64')).isValid) {
 							console.error('not a jpeg');
-							return new Response('ok');
+							return new Response('ok success');
 						}
 						try {
 							await env.DB.prepare(
@@ -543,10 +543,10 @@ ${results
 						} catch (e) {
 							console.error(e);
 						}
-						return new Response('ok');
+						return new Response('ok success');
 					}
 				}
-				return new Response('ok');
+				return new Response('ok success');
 			})
 			.on(':edited_message', async (ctx) => {
 				const msg = ctx.update.edited_message!;
@@ -574,7 +574,7 @@ ${results
 				} catch (e) {
 					console.error(e);
 				}
-				return new Response('ok');
+				return new Response('ok success');
 			})
 			.handle(request.clone());
 		return new Response('ok success');
