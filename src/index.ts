@@ -276,7 +276,7 @@ export default {
 				if (!res.ok) {
 					console.error(`Error sending message:`, res);
 				}
-				return new Response('ok');
+				return new Response(res.body);
 			})
 			.on('query', async (ctx) => {
 				const groupId = ctx.update.message!.chat.id;
@@ -577,6 +577,6 @@ ${results
 				return new Response('ok');
 			})
 			.handle(request.clone());
-		return new Response('ok');
+		return new Response('ok success');
 	},
 };
